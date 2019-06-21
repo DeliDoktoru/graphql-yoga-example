@@ -1,0 +1,41 @@
+//çalıştırmak için
+//const graphRun = require('/graphql.js');
+//graphRun({port:3001});
+
+
+//graphql.js
+const logInput = async (resolve, root, args, context, info) => {ş
+    console.log(`1. logInput: ${JSON.stringify(args)}`)
+    const result = await resolve(root, args, context, info)
+    console.log(`5. logInput`)
+    return result
+  }
+  
+  const logResult = async (resolve, root, args, context, info) => {
+    console.log(`2. logResult`)
+    const result = await resolve(root, args, context, info)
+    console.log(`4. logResult: ${JSON.stringify(result)}`)
+    return result
+  }
+
+module.exports = function(opt){
+    const { GraphQLServer } = require('graphql-yoga')
+    const typeDefs=`
+    type Query {
+      hello(kullaniciEPosta: String,kullaniciParola: String): String!   
+      test:[test]
+    }
+    type test{
+      a: String 
+    }`
+    const resolvers= { 
+        Query: { 
+            hello: (_, { kullaniciEPosta,kullaniciParola }) => `Hello ${kullaniciEPosta || 'World'}  ${kullaniciParola} `,
+            test: ()=>[{a:"z"},{a:"b"}] ,
+        }
+    };
+
+    const graphQLserver = new GraphQLServer({ typeDefs, resolvers ,middlewares: [logInput, logResult],});
+    graphQLserver.start(opt,() => console.log('GraphQLServer ready..'));
+
+    }
