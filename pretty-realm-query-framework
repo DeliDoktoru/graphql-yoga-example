@@ -2,21 +2,27 @@
 const schema={
     test : {
         name: 'test',
+        primaryKey: 'id',
         properties: {
             id: 'int',
             name: 'string',
+            silindiMi: 'int',
         }
     },
     autoIncrement : {
         name: 'autoIncrement',
+        primaryKey: 'tableName',
         properties: {
             tableName: 'string',
-            count: 'int'
+            count: 'int',
+
         }
         
     }
 }
 export default Object.keys(schema).map(x=>schema[x]);
+
+
 
 //db
 import Realm from 'realm';
@@ -26,7 +32,7 @@ function getOptions() {
     var a=schema;
     return {
         schema: schema,
-        schemaVersion: 10
+        schemaVersion: 11
     };
 }
 
@@ -64,28 +70,59 @@ async function getMaxId(tableName,realm){
 
 
 export default  {
-    createData:async function (tableName,data) {
+    createData: async function (tableName,data) {
         return new Promise( function (resolve, reject) {
             openDb().then(async (realm) => {
                 var Id=await getMaxId(tableName,realm);
-                data.id=Id
+                data.id=Id;
+                data.silindiMi=0;
                 realm.write(() => {
                     resolve(realm.create(tableName, data));
                 });
             });
         });
     },
-    getDatas:async function (tableName) {
+    getDatas: async function (tableName) {
         return new Promise(function (resolve, reject) {
             openDb().then(realm => {
-                resolve(Array.from(realm.objects(tableName)));
+                resolve(Array.from(realm.objects(tableName)).filtered('silindiMi=0'));
             });
         });
     },
-    getDataById:async function(tableName,id){
+    getDataById: async function(tableName,id){
       return new Promise(function (resolve, reject) {
         openDb().then(realm => {
-            resolve(realm.objects(tableName).filtered('id="'+id+'"')[0]);
+            resolve(realm.objects(tableName).filtered('id="'+id+'" AND silindiMi=0')[0]);
+        });
+      });
+    },
+    deleteDataById: async function(tableName,id){
+      return new Promise(function (resolve, reject) {
+        openDb().then(realm => {
+            var result=realm.objects(tableName).filtered('id="'+id+'" AND silindiMi=0')[0];
+            if(result){
+              resolve(realm.write(() => { result.silindiMi = 1; }));
+            }
+            else{
+              reject("veribulunamadi");
+            }
+        });
+      });
+    },
+    updateDataById: async function(tableName,id,data){
+      return new Promise(function (resolve, reject) {
+        openDb().then(realm => {
+            var result=realm.objects(tableName).filtered('id="'+id+'" AND silindiMi=0')[0];
+            if(result){
+              resolve(realm.write(() => { 
+                for(prop in data){
+                  result[prop]=data[prop];
+                }
+               }));
+            }
+            else{
+              reject("veribulunamadi");
+            }
         });
       });
     },
