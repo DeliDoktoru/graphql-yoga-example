@@ -1,0 +1,95 @@
+//schema
+const schema={
+    test : {
+        name: 'test',
+        properties: {
+            id: 'int',
+            name: 'string',
+        }
+    },
+    autoIncrement : {
+        name: 'autoIncrement',
+        properties: {
+            tableName: 'string',
+            count: 'int'
+        }
+        
+    }
+}
+export default Object.keys(schema).map(x=>schema[x]);
+
+//db
+import Realm from 'realm';
+import schema from './schema';
+
+function getOptions() {
+    var a=schema;
+    return {
+        schema: schema,
+        schemaVersion: 10
+    };
+}
+
+function openDb() {
+    return Realm.open(getOptions());
+}
+
+async function getMaxId(tableName,realm){
+  var result=realm.objects('autoIncrement').filtered('tableName="'+tableName+'"')[0];
+  var Id;
+  if( result == null ){
+    realm.write(()=>{  realm.create('autoIncrement',{tableName:tableName , count:2 }) });
+    Id=1;
+  }
+  else if( result.count == null ){
+    realm.write(() => { result.count = 2; });
+    Id=1;
+  }
+  else{
+    Id=result.count;
+    nextId=parseInt(Id);
+    if(isNaN(nextId)){
+      Id=1;
+      realm.write(() => { result.count = 2; });
+    }
+    else{
+      realm.write(() => { result.count = Id+1; });  
+    }
+  }  
+  if(Id == null){
+    throw "idbulunamadi";
+  }
+  return Id;
+}
+
+
+export default  {
+    createData:async function (tableName,data) {
+        return new Promise( function (resolve, reject) {
+            openDb().then(async (realm) => {
+                var Id=await getMaxId(tableName,realm);
+                data.id=Id
+                realm.write(() => {
+                    resolve(realm.create(tableName, data));
+                });
+            });
+        });
+    },
+    getDatas:async function (tableName) {
+        return new Promise(function (resolve, reject) {
+            openDb().then(realm => {
+                resolve(Array.from(realm.objects(tableName)));
+            });
+        });
+    },
+    get
+    deleteDb: function () {
+        openDb().then(realm => {
+            realm.write(() => {
+                realm.deleteAll();
+            });
+        });
+    }
+      
+
+}
