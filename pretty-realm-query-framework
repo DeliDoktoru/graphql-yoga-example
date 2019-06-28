@@ -82,7 +82,13 @@ export default  {
             });
         });
     },
-    get
+    getDataById:async function(tableName,id){
+      return new Promise(function (resolve, reject) {
+        openDb().then(realm => {
+            resolve(realm.objects(tableName).filtered('id="'+id+'"')[0]);
+        });
+      });
+    },
     deleteDb: function () {
         openDb().then(realm => {
             realm.write(() => {
