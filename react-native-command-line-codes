@@ -1,0 +1,12 @@
+//start avd
+sdk/emulator/emulator -list-avds
+emulator -avd $NameOfDevice$
+
+//start RN
+yarn start eject
+react-native run-android
+
+//also
+
+react-native start --reset-cache
+adb kill-server && adb start-server
