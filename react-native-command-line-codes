@@ -10,3 +10,6 @@ react-native run-android
 
 react-native start --reset-cache
 adb kill-server && adb start-server
+
+cd android && gradlew clean
+cd .. && react-native run-android
