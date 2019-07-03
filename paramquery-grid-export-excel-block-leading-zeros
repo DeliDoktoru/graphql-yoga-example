@@ -1,0 +1,10 @@
+var tmpGrid=gridI;
+var showCol=tmpGrid.option("colModel").filter(x=> !x.hidden)
+tmpGrid.pdata=tmpGrid.pdata.map(x=> {  
+	showCol.map(y=>{ 
+		if(!isNaN(parseInt(x[y.dataIndx]))){
+			x[y.dataIndx]=" "+x[y.dataIndx];
+		} 
+	}) 
+	return x;  
+});
