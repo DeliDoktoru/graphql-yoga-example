@@ -1,4 +1,4 @@
-var showCol=tmpGrid.option("colModel").filter(x=> !x.hidden)
+var showCol=gridI.option("colModel").filter(x=> !x.hidden)
 gridI.pdata.map(x=> {  
 	showCol.map(y=>{ 
 		if(!isNaN(parseInt(x[y.dataIndx]))){
