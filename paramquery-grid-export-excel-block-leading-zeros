@@ -1,9 +1,14 @@
-var showCol=gridI.option("colModel").filter(x=> !x.hidden)
-gridI.pdata.map(x=> {  
-	showCol.map(y=>{ 
-		if(!isNaN(parseInt(x[y.dataIndx]))){
-			x[y.dataIndx]=" "+x[y.dataIndx];
-		} 
-	}) 
-	return x;  
+var showCol=this.option("colModel").filter(x=> !x.hidden);
+var tmpPdata=JSON.stringify(this.pdata);
+this.pdata.map(x=> {  
+    showCol.map(y=>{ 
+	if(!isNaN(parseInt(x[y.dataIndx]))){
+	    x[y.dataIndx]=" "+x[y.dataIndx];
+	} 
+    }) 
+    return x;  
 });
+exportData.call(this, 'xlsx');  
+this.pdata=JSON.parse(tmpPdata);
+delete tmpPdata;
+
