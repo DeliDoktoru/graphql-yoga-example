@@ -1,0 +1,18 @@
+Sub ProcCells1()
+    Dim tTable As Table
+    Dim cCell As Cell
+    Dim sTemp As String
+
+    sTemp = "-"
+
+    For Each tTable In ActiveDocument.Range.Tables
+        For Each cCell In tTable.Range.Cells
+            'An apparently empty cell contains an end of cell marker
+            If Len(cCell.Range.Text) < 3 Then
+                cCell.Range = sTemp
+            End If
+        Next
+    Next
+    Set oCell = Nothing
+    Set tTable = Nothing
+End Sub
