@@ -1,0 +1,123 @@
+runuser -l deli -c 'cd /root/Downloads/tor-browser-linux64-9.0.5_en-US/tor-browser_en-US;./start-tor-browser.desktop' // başka kullanıcı gibi başlatma
+updatedb //locate güncelliyor
+cat /proc/bus/input/devices // event device ları gösterir
+hexdump /dev/input/eventSAYI //hex olarak okur
+For bin :
+xxd -b file
+For hex :
+xxd file
+xxd -b -s 16 /dev/input/event0
+
+xxd -c 24 -b /dev/input/event0 //SONDAN 6. Byte BAK klavyeden basılan tuş
+
+cat /proc/asound/cards //ses kartı bilgileri
+nohup gedit & disown
+cat /etc/passwd  //kullanıcılar
+useradd -M dummy //dummy kullanıcı home klasörü olmadan
+dpkg ... //dosya yükleme (.deb)
+code -r ... // vscode ile dosya açma
+su kullanicidi (sonra) bash yazcan //kullanıcı değiştirme
+tee //komutu çıktıyı hem ekrana yazdırıyor hem dosyaya örnek ls | tee -a  stdout.log
+locate dosya ismi //dosya yolu buluyor
+file dosya ismi// dosya bilgisi
+mv dosyaismi dosyaismi // taşıma ve isim değişme
+scp // ssh lı dosya çekme örnek scp -r root@10.3.1.30:root/Desktop/ /home
+python -c "kod" //python kodu yazma dosya olmadan
+watch -b -n 1 "exit 1" // belli süreyle işlem yapar eğer 0 dışında çıktı verirse ses çıkarır
+shuf -i 1-100 -n 2 // 1 le 100 arasında rastegele 2 tane sayı üretme
+ls -l | grep '^d' // klasörleri listele
+file * // dosya tiplerini listeler
+ls açıklamalar
+- : regular file
+d : directory
+c : character device file
+b : block device file
+s : local socket file
+p : named pipe
+l : symbolic link
+root/.config/autostart  // başlangıç çalışma
+xdg-open folder  //dosya açma
+ls -1 | wc -l  // dosya sayısı
+ssh -c 3des-cbc -oKexAlgorithms=+diffie-hellman-group1-sha1 192.168.1.1
+wc -l dosyaAdı // dosyadaki satır sayısı
+çöp //.local/share/Trash/files
+find . -name "access.log*" | while read line; do grep "500" "$line" 2>/dev/null; done //arama
+time komut // komut geçen zaman gösterir
+sh -c "kod" //shell kodu çalıştırmak için python -c "kod" gibi aşşağıdaki için lazım
+cat foo.txt | xargs -I % sh -c 'echo %;mkdir %' // çıktıdan gelen her bir satırı çalıştırır 
+find . -name 'access.log*' | xargs -I % sh -c 'grep 500 %'
+
+
+find ./foo -type f -name "*.txt" -exec rm {} \;  //exec findin özelliği tırt
+find ./foo -type f -name "*.txt" | xargs rm
+
+egrep //regular grep
+egrep "^[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}" -roh 
+// ip adreslerini arıyor r recursive iç içe bütün dosyaalra bakıyor, o sadece o satır, h dosya ismi gösterme
+/* replace
+cat split-me.txt
+1;2;3
+sed "s/;/\n/g" split-me.txt
+1
+2
+3
+*/
+/*
+/*
+seq -s" " 1 100
+1 2 3 ... 100
+*/
+
+systemctl list-unit-files --type=service // başlangıçtaki programlar
+systemctl is-enabled x //başlangıçta çalıştırma
+systemctl status rc-local.service //rc.local çalıştımı
+
+/etc/bash.bashrc // terminal kodu
+
+$$ //terminal pid echo $$
+ps -eo pcpu,pid,user,args | sort -k1 -r -n | head -10 // en fazla cpu kullanan 10 pid
+ps -eo pcpu,pid | sort -k1 -r -n | head -1 | awk '{ print $2 }' | xargs -I % sh -c 'kill -9  %;' //emergency
+ a="$(date)";ps -eo pcpu,pid,args | sort -k1 -r -n | head -1 | awk  -v date="$a" '{ print "[" date "] Emergency:" $3  >> "/var/log/kali.log"; print $2 }'   | xargs -I % sh -c 'kill -9 %;'   //emergecy loglu
+sh -c " a=\"$(date)\";ps -eo pcpu,pid,args | sort -k1 -r -n | head -1 | awk  -v date=\"$a\" '{ print \"[\" date \"] Emergency:\" $3  >> \"/var/log/kali.log\"; print $2 }'   | xargs -I % sh -c 'kill -9 %;' "
+
+
+"resource:///org/gnome/shell/theme/checkbox-off.svg" // nedir ?
+cd /usr/share/gnome-shell
+gresource extract gnome-shell-theme.gresource /org/gnome/shell/theme/checkbox-off.svg > test
+
+
+fcrackzip -uDp /opt/rockyou.txt zipim.zip
+
+
+convert *.jpg -auto-orient pictures.pdf //resimleri pdf çevirme
+
+printf "%d\n" 0xFF // hex integer olarak çıktı
+
+cmp x,y // sağdakini soldakinden çıkar
+
+
+sort poo.txt | uniq -u | wc -l
+
+
+gnome-terminal -e 'sh -c "echo test; sleep 10"'
+
+whiptail --title "Example Dialog" --infobox "This is an example of an info box." 8 78
+// mesaj box
+
+if (whiptail --title "Example Dialog" --yesno "This is an example of a yes/no box." 8 78); then
+    echo "User selected Yes, exit status was $?."
+else
+    echo "User selected No, exit status was $?."
+fi
+// mesaj box yes/no  kaynak:https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail
+
+ssh ..
+export DISPLAY=:0
+firefox
+// Uzaktan program çalıştırma gui li
+
+grep -oP -m1 "patern" // regex first match (m1) 
+
+
+zip -r o.zip cy
+zip -r bot.zip bot/
