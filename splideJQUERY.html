@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.1.7/dist/js/splide.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.1.7/dist/css/splide.min.css">
+    </head>
+<body>
+    <div class="splide">
+        <div class="splide__track">
+              <ul class="splide__list">
+                  <li class="splide__slide">Slide 01</li>
+                  <li class="splide__slide">Slide 02</li>
+                  <li class="splide__slide">Slide 03</li>
+              </ul>
+        </div>
+      </div>
+      <div class="splide">
+        <div class="splide__track">
+              <ul class="splide__list">
+                  <li class="splide__slide">Slide 01</li>
+                  <li class="splide__slide">Slide 02</li>
+                  <li class="splide__slide">Slide 03</li>
+              </ul>
+        </div>
+      </div>
+
+    <script>
+        $(function(){
+            for ( var i = 0; i < $(".splide").length; i++ ) {
+                new Splide( $(".splide")[i]).mount();
+            }
+        })
+        
+    </script>
+</body>
+   
+
+
+    
+</html>
