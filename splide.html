@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.1.7/dist/js/splide.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.1.7/dist/css/splide.min.css">
+    </head>
+<body>
+    <div class="splide">
+        <div class="splide__track">
+              <ul class="splide__list">
+                  <li class="splide__slide">Slide 01</li>
+                  <li class="splide__slide">Slide 02</li>
+                  <li class="splide__slide">Slide 03</li>
+              </ul>
+        </div>
+      </div>
+      <div class="splide">
+        <div class="splide__track">
+              <ul class="splide__list">
+                  <li class="splide__slide">Slide 01</li>
+                  <li class="splide__slide">Slide 02</li>
+                  <li class="splide__slide">Slide 03</li>
+              </ul>
+        </div>
+      </div>
+
+    <script>
+        var elms = document.getElementsByClassName( 'splide' );
+
+        for ( var i = 0; i < elms.length; i++ ) {
+            new Splide( elms[ i ] ).mount();
+        }
+    </script>
+</body>
+   
+
+
+    
+</html>
