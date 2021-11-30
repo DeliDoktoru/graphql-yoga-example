@@ -1,0 +1,43 @@
+String.prototype.replaceAll = function (find, replace) {
+    var str = this;
+    return str.replace(new RegExp(find, 'g'), replace);
+};
+function fonk() {
+    var table = document.querySelector("#root > div > div.css-m1gtqz-body > main > div > div:nth-child(4) > div.css-1j8ngqv-tableRoot > div.css-1y0eoyp-tableWrapper > div > table");
+    var header=[];
+    var body=[];
+    var first=true;
+    var i=1;
+    for (let row of table.rows) {
+        let r=[]
+        for (let cell of row.cells) {
+            let val = cell.innerText;
+            if(val.trim()!=""){
+                r.push(val)
+                if(first){
+                    header.push("Col"+i);
+                    i++;
+                }
+            }
+        }
+        body.push(r)
+        first=false;
+    }
+    download( [header].concat(body) );
+}
+function download(array){
+    var result=""
+    for(x of array)
+    {
+        result+=x.map(x=> x.trim().replaceAll(",","").replaceAll("\n"," ")).join(",")+"\n";
+    }
+    var uri = 'data:text/csv;charset=utf-8,' + result;
+    var downloadLink = document.createElement("a");
+    downloadLink.href = uri;
+    downloadLink.download =  "a.csv";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+}
+fonk();
